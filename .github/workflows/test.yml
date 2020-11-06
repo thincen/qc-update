@@ -28,11 +28,12 @@ jobs:
       
       - name: Update QC infomation
         run: |
-          python update.py 1>update.log 2>err.log
-          echo '\n'
+          #python update.py 1>update.log 2>err.log
+          python update.py
+          echo 'test push' > update.log
           cat update.log
-          echo '\n'
-          cat err.log
+          #cat err.log
+          echo 'test push' > zhikong.txt
           
           echo 'NEWQC<<EOF' >> $GITHUB_ENV
           git diff --stat|wc -l >> $GITHUB_ENV
