@@ -27,5 +27,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: set timezone
         run: |
-          sudo ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          ls -l /etc/localtime
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
           date
