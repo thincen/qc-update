@@ -1,0 +1,84 @@
+name: "QC-Update-CI"
+
+on:
+  schedule:
+    - cron: '30 4 * * *'
+    - cron: '30 16 * * *'
+
+jobs:
+  update:
+    name: Update QC infomation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests lxml
+      
+      - name: Update QC infomation
+        run: |
+          python update.py 1>update.log 2>err.log
+          echo 'NEWQC<<EOF' >> $GITHUB_ENV
+          git diff --stat|wc -l >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          echo 'MSG<<EOF' >> $GITHUB_ENV
+          cat update.log >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          echo 'LEN_ERR<<EOF' >> $GITHUB_ENV
+          cat err.log|wc -c >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      
+      - name: Ft push Err MSG
+        if: env.LEN_ERR > 0
+        run: |
+          curl -s "http://sc.ftqq.com/${{ secrets.ftsckey }}.send?text=qc-update-ci-err" \
+          -d "&desp=$(cat err.log)"
+        
+      - name: Ft push Update MSG
+        if: env.NEWQC > 0
+        run: |
+          curl -s "http://sc.ftqq.com/${{ secrets.ftsckey }}.send?text=qc-update-ci-msg" \
+          -d "&desp=${{ env.MSG }}"
+
+      - name: Git config
+        if: env.NEWQC > 0
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          #git config --global commit.template ./update.log
+      
+      - name: Commit Files
+        if: env.NEWQC > 0
+        run: |
+          git add list zhikong.txt
+          git commit -m "${{env.MSG}}"
+          git push origin main
+
+      - name: Push gitee
+        if: env.NEWQC > 0
+        env:
+          SSH_KEY: ${{secrets.gitee_ssh_key}}
+          SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
+          echo ${SSH_KEY} > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo ${SSH_KEY_PUB} > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+          cd ..
+          git clone git@gitee.com:suplxc/getqcpy.git
+          cd getqcpy
+          cp ../qc-update/list ./list.txt
+          cp ../qc-update/zhikong.txt ./
+          TZ='Asia/Shanghai' date +%s > version
+          git add list zhikong.txt version
+          git commit -m "${{ env.MSG }}"
+          git push origin master
