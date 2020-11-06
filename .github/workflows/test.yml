@@ -67,4 +67,4 @@ jobs:
         if: env.NEWQC > 0
         run: |
           git add list zhikong.txt
-          git commit -m ${{ env.MSG }}
+          git commit -m '"'${{ env.MSG }}'"'
