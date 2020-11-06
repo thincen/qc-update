@@ -68,5 +68,5 @@ jobs:
         run: |
           git add list zhikong.txt
           git commit -m "${{ env.MSG }}"
-          git remote -v
-          git push orgin main
+          #git remote -v
+          git push origin main
