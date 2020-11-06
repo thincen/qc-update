@@ -29,7 +29,7 @@ jobs:
       - name: Update QC infomation
         run: |
           #python update.py 1>update.log 2>err.log
-          python update.py
+          #python update.py
           echo 'test push' > update.log
           cat update.log
           #cat err.log
@@ -68,3 +68,5 @@ jobs:
         run: |
           git add list zhikong.txt
           git commit -m "${{ env.MSG }}"
+          git remote -v
+          git push orgin main
