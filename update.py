@@ -51,10 +51,10 @@ def save(data):
     s=""
     for node in data:
         s = s + node['name'] + '|' + node['id'] + '|' + node['num'] + '|' + node['val'] + '|' + node['date'] + '|' + save_time + '\n'
+        print(node['name']+':'+node['val']+'\n')
     f = open('./zhikong.txt','a',encoding='utf-8')
     f.write(s)
     f.close()
-    print(s)
 
 def main():
     keys=["cu","pb","zn","cd","fe","mn","ni","k","na","ca","mg","hg","se","as","六价铬","总铬","油","ph","电导","总磷","氨氮","阴离子","挥发酚","总氮","COD","氮氧化物","硝酸盐"]
