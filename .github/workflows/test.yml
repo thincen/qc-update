@@ -29,10 +29,18 @@ jobs:
       - name: Update QC infomation
         run: |
           python update.py 1>update.log 2>err.log
+          echo '\n'
+          cat update.log
+          echo '\n'
+          cat err.log
+          
           echo 'NEWQC<<EOF' >> $GITHUB_ENV
           git diff --stat|wc -l >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-          echo ${{ env.NEWQC }}
+          
+          echo 'MSG<<EOF' >> $GITHUB_ENV
+          cat update.log >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
       - name: Set SSH-Key
         if: env.NEWQC > 0
@@ -52,10 +60,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git config --local commit.template ./update.log
+          #git config --local commit.template ./update.log
       
       - name: Commit Files
         if: env.NEWQC > 0
         run: |
           git add list zhikong.txt
-          git commit
+          git commit -m ${{ env.MSG }}
