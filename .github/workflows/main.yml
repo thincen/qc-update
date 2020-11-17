@@ -36,20 +36,13 @@ jobs:
           SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
         run: |
           mkdir -p ~/.ssh
-          echo "mkdir -p ~/.ssh\n----\nls ~/.ssh"
-          ls -l ~/.ssh
           ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
           echo $SSH_KEY > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keygen -p -m PEM -f ~/.ssh/id_rsa
           echo "ls ~/.ssh"
           ls -l ~/.ssh
           cd ..
           git clone git@gitee.com:suplxc/getqcpy.git
           cd getqcpy
           ls
-          echo "~/.ssh\n"
-          echo "--------"
-          ls ~/.ssh
-          cat ~/.ssh/id_rsa
           pwd
