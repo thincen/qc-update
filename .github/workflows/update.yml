@@ -65,22 +65,17 @@ jobs:
 
       - name: Push gitee
         if: env.NEWQC > 0
-        env:
-          SSH_KEY: ${{secrets.gitee_ssh_key}}
-          SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
-          echo ${SSH_KEY} > ~/.ssh/id_rsa
+          ssh-keyscan -H gitee.com,180.97.125.228 >> ~/.ssh/known_hosts
+          echo "${{ secrets.GITEE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo ${SSH_KEY_PUB} > ~/.ssh/id_rsa.pub
-          chmod 644 ~/.ssh/id_rsa.pub
           cd ..
           git clone git@gitee.com:suplxc/getqcpy.git
           cd getqcpy
           cp -f ../qc-update/list ./list.txt
           cp -f ../qc-update/zhikong.txt ./zhikong.txt
           TZ='Asia/Shanghai' date +%s > version
-          git add list zhikong.txt version
+          git add list.txt zhikong.txt version
           git commit -m "${{ env.MSG }}"
           git push origin master
