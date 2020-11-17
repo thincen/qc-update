@@ -32,7 +32,7 @@ jobs:
           date
       - name: Test gitee
         env:
-          SSH_KEY: ${{ secrets.gitee_ssh_key }}
+          SSH_KEY: ${{ secrets.GITEE_SSH_KEY }}
           SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
         run: |
           mkdir -p ~/.ssh
