@@ -37,9 +37,10 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
-          cat $SSH_KEY
+          cat ~/.ssh/known_hosts
+          echo $SSH_KEY
           echo "-----"
-          cat ${SSH_KEY_PUB}
+          echo ${SSH_KEY_PUB}
           echo ${SSH_KEY} > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo ${SSH_KEY_PUB} > ~/.ssh/id_rsa.pub
