@@ -36,13 +36,13 @@ jobs:
           SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
+          ssh-keyscan -H gitee.com,180.97.125.228 >> ~/.ssh/known_hosts
           echo $SSH_KEY > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "ls ~/.ssh"
           ls -l ~/.ssh
           cd ..
-          git clone git@gitee.com:suplxc/getqcpy.git
+          git clone git@180.97.125.228:suplxc/getqcpy.git
           cd getqcpy
           ls
           pwd
