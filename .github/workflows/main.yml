@@ -36,8 +36,8 @@ jobs:
           SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
         run: |
           mkdir -p ~/.ssh
-          ehco "mkdir -p ~/.ssh\n----\nls ~/.ssh"
-          ls ~/.ssh
+          echo "mkdir -p ~/.ssh\n----\nls ~/.ssh"
+          ls -l ~/.ssh
           ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
           echo ${SSH_KEY} > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
