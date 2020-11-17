@@ -35,6 +35,7 @@ jobs:
           SSH_KEY: ${{ secrets.GITEE_SSH_KEY }}
           SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
         run: |
+          sudo apt-get install openssh-client -y
           mkdir -p ~/.ssh
           ssh-keyscan -H gitee.com,180.97.125.228 >> ~/.ssh/known_hosts
           echo $SSH_KEY > ~/.ssh/id_rsa
