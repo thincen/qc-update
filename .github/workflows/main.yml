@@ -30,3 +30,25 @@ jobs:
           ls -l /etc/localtime
           sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
           date
+      - name: Test gitee
+        env:
+          SSH_KEY: ${{secrets.gitee_ssh_key}}
+          SSH_KEY_PUB: ${{secrets.gitee_ssh_key_pub}}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
+          cat $SSH_KEY
+          echo "-----"
+          cat ${SSH_KEY_PUB}
+          echo ${SSH_KEY} > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo ${SSH_KEY_PUB} > ~/.ssh/id_rsa.pub
+          chmod 644 ~/.ssh/id_rsa.pub
+          cd ..
+          git clone git@gitee.com:suplxc/getqcpy.git
+          cd getqcpy
+          ls
+          echo "~/.ssh\n"
+          echo "--------"
+          ls ~/.ssh
+          cat ~/.ssh/id_rsa
