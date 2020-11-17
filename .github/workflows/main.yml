@@ -37,9 +37,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H gitee.com,180.97.125.228 >> ~/.ssh/known_hosts
-          echo $SSH_KEY > ~/.ssh/id_rsa
+          echo "${{ secrets.GITEE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-add ~/.ssh/id_rsa
+          sudo ssh-add ~/.ssh/id_rsa
           ssh -T git@gitee.com
           echo "ls ~/.ssh"
           ls -l ~/.ssh
