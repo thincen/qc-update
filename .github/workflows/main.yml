@@ -52,3 +52,5 @@ jobs:
           echo "--------"
           ls ~/.ssh
           cat ~/.ssh/id_rsa
+          pwd
+          ssh git@gitee.com
