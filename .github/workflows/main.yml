@@ -39,14 +39,14 @@ jobs:
           echo "mkdir -p ~/.ssh\n----\nls ~/.ssh"
           ls -l ~/.ssh
           ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
-          echo ${SSH_KEY} > ~/.ssh/id_rsa
+          echo $SSH_KEY > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo ${SSH_KEY_PUB} > ~/.ssh/id_rsa.pub
-          chmod 644 ~/.ssh/id_rsa.pub
+          #echo $SSH_KEY_PUB > ~/.ssh/id_rsa.pub
+          #chmod 644 ~/.ssh/id_rsa.pub
           echo "ls ~/.ssh"
           ls -l ~/.ssh
           echo "ssh git@gitee.com"
-          ssh git@gitee.com
+          sudo ssh git@gitee.com
           cd ..
           git clone git@gitee.com:suplxc/getqcpy.git
           cd getqcpy
