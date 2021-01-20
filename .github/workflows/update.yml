@@ -46,10 +46,9 @@ jobs:
       - name: Cool Push Err MSG
         if: env.LEN_ERR >0
         run: |
-          url = "https://push.xuthus.cc/send/${{ secrets.coolpuhskey }}"
-          data = "QC Update Err \n $(cat err.log)"
-          res = requests.post(url=url,data=data)
-          
+          curl -s "https://push.xuthus.cc/send/${{ secrets.coolpuhskey }}" \
+          -d "QC Update Err \n $(cat err.log)"
+
       - name: Ft push Update MSG
         if: env.NEWQC > 0
         run: |
@@ -59,10 +58,9 @@ jobs:
       - name: Cool Push Update MSG
         if: env.NEWQC > 0
         run: |
-          url = "https://push.xuthus.cc/send/${{ secrets.coolpuhskey }}"
-          data = "QC Update \n ${{ env.MSG }}"
-          res = requests.post(url=url,data=data)
-
+          curl -s "https://push.xuthus.cc/send/${{ secrets.coolpuhskey }}" \
+          -d "QC Update \n ${{ env.MSG }}"
+      
       - name: Git config
         if: env.NEWQC > 0
         run: |
