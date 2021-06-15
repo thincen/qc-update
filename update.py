@@ -9,12 +9,16 @@ def fetch(key,page=1):
     url='https://www.hb-erm.com/index.php?m=goods&a=search&key='+key+'&cate=334&p='+str(page)
     header={'user-agent':'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
     html = requests.get(url,headers=header).text
+    res=[]
     content = etree.HTML(html)
-   
-    arr=content.xpath("//tbody//tr//td[position()<6]//text()[normalize-space()]")
-    for i in range(len(arr)):
-        arr[i]=arr[i].strip()
-    return arr
+    arr=content.xpath("//tbody//tr//td[position()<6]")#//text()[normalize-space()]")
+    for node in arr:
+        nodestr=node.xpath("string(.)")
+        if "促" in nodestr:
+            nodestr=nodestr.replace("促","")
+        nodestr=nodestr.strip()
+        res.append(nodestr)
+    return res
 
 # 检查是否已经记录过
 # 未记录 添加记录 返回Flase
@@ -36,7 +40,12 @@ def parseRes(res):
         node['id']=res[i+1]
         if isExist(node['id']):
             continue
-        node['name']=res[i].split()[1]
+        namearr=res[i].split()
+        if len(namearr)==1:
+            name=namearr[0]
+        else:
+            name=namearr[1]
+        node['name']=name
         node['num']=res[i+2]
         val=res[i+3].replace('/l','/L')
         val=val.replace('/ml','/mL')
