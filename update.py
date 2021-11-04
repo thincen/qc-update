@@ -70,7 +70,7 @@ def save(data):
 
 def pushDB(data):
     url=os.getenv("APIURL")
-    if(url==""):
+    if(url==None):
         #print('getenv("APIURL") err:',file=sys.stderr,flush=True)
         pushPlus("getenv('APIURL') err")
         return
@@ -89,7 +89,7 @@ def pushDB(data):
 
 def pushPlus(msg):
     token = os.getenv("PUSHPLUSHTOKEN") #在pushpush网站中可以找到
-    if(token==""):
+    if(token==None):
         #print('getenv("PUSHPLUSHTOKEN") err:',file=sys.stderr,flush=True)
         pushPlus("getenv('PUSHPLUSHTOKEN') err")
         return
