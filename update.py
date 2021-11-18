@@ -75,6 +75,7 @@ def pushDB(data):
         pushPlus("getenv('APIURL') err")
         return
     header={'Content-Type':'application/json'}
+    err=[]
     for node in data:
         dbData={}
         dbData['id']=node['id']
@@ -84,8 +85,12 @@ def pushDB(data):
         dbData['expiration']=int(datetime.strptime(node['date'],'%Y-%m-%d').timestamp())
         dbData['update']=int(datetime.now().astimezone(timezone(timedelta(hours=8))).timestamp())
         body=json.dumps(dbData).encode(encoding='utf-8')
-        requests.post(url,headers=header,data=body)
+        res=requests.post(url,headers=header,data=body)
+        if(res.code!=200):
+            err.append(res.msg)
         time.sleep(1)
+    if(len(err)>0):
+        pushPlush(err)
 
 def pushPlus(msg):
     token = os.getenv("PUSHPLUSHTOKEN") #在pushpush网站中可以找到
