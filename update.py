@@ -86,11 +86,14 @@ def pushDB(data):
         dbData['update']=int(datetime.now().astimezone(timezone(timedelta(hours=8))).timestamp())
         body=json.dumps(dbData).encode(encoding='utf-8')
         res=requests.post(url,headers=header,data=body)
-        if(res.code!=200):
+        res.encoding = 'utf-8'
+        #print(res.text)
+        if(res.status_code!=200):
             err.append(res.msg)
         time.sleep(1)
+        res.close()
     if(len(err)>0):
-        pushPlush(err)
+        pushPlus(err)
 
 def pushPlus(msg):
     token = os.getenv("PUSHPLUSHTOKEN") #在pushpush网站中可以找到
