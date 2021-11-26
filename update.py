@@ -89,7 +89,7 @@ def pushDB(data):
         res.encoding = 'utf-8'
         #print(res.text)
         if(res.status_code!=200):
-            err.append(res.msg)
+            err.append(json.loads(res.text).msg)
         time.sleep(1)
         res.close()
     if(len(err)>0):
@@ -124,7 +124,11 @@ def main():
         time.sleep(2)
         if(len(data)>0):
             save(data)
-            pushDB(data)
+            try:
+                pushDB(data)
+            except Exception as e:
+                pushPlus(e)
+                pass
             msg.extend(data)
     pushPlus(msg)
 
