@@ -117,7 +117,7 @@ def pushPlus(msg):
     requests.post(url,data=body,headers=headers)
 
 def main():
-    keys=["cu","pb","zn","cd","fe","mn","ni","k","na","ca","mg","hg","se","as","六价铬","总铬","油","ph","电导","总磷","氨氮","阴离子","挥发酚","总氮","COD","氮氧化物","硝酸盐"]
+    keys=["cu","pb","zn","cd","fe","mn","ni","k","na","ca","mg","hg","se","as","六价铬","总铬","油","ph","电导","总磷","氨氮","阴离子","挥发酚","总氮","COD","氮氧化物","硝酸盐","硫","硬度","BOD"]
     msg=[]
     for key in keys:
         data = parseRes(fetch(key))
