@@ -28,7 +28,7 @@ jobs:
         run: |
           which python
           which python3
-          APIURL=${{ secrets.vercelapiqcurl }} PUSHPLUSHTOKEN=${{ secrets.pushplustoken }} python3 update.py 1>update.log 2>err.log
+          APIURL=${{ secrets.vercelapiqcurl }} PUSHPLUSHTOKEN=${{ secrets.pushplustoken }} python3 update.py 1>update.log
           echo 'NEWQC<<EOF' >> $GITHUB_ENV
           git diff --stat|wc -l >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
@@ -36,7 +36,6 @@ jobs:
           cat update.log >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
           echo 'LEN_ERR<<EOF' >> $GITHUB_ENV
-          cat err.log|wc -c >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       
       - name: Ft push Err MSG
