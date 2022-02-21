@@ -1,10 +1,8 @@
 name: "QC-Update-CI"
 
 on:
-  schedule:
-    - cron: '30 4 * * *'
-    - cron: '30 16 * * *'
-
+  push:
+    branches: [debug]
 jobs:
   update:
     name: Update QC infomation
@@ -26,7 +24,7 @@ jobs:
       
       - name: Update QC infomation
         run: |
-          APIURL=${{ secrets.vercelapiqcurl }} PUSHPLUSHTOKEN=${{ secrets.pushplustoken }} python update.py 1>update.log 2>err.log
+          APIURL=${{ secrets.vercelapiqcurl }} PUSHPLUSHTOKEN=${{ secrets.pushplustoken }} python update.py
           echo 'NEWQC<<EOF' >> $GITHUB_ENV
           git diff --stat|wc -l >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
