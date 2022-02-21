@@ -26,7 +26,9 @@ jobs:
       
       - name: Update QC infomation
         run: |
-          APIURL=${{ secrets.vercelapiqcurl }} PUSHPLUSHTOKEN=${{ secrets.pushplustoken }} python update.py 1>update.log 2>err.log
+          which python
+          which python3
+          APIURL=${{ secrets.vercelapiqcurl }} PUSHPLUSHTOKEN=${{ secrets.pushplustoken }} python3 update.py 1>update.log 2>err.log
           echo 'NEWQC<<EOF' >> $GITHUB_ENV
           git diff --stat|wc -l >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
