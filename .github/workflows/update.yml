@@ -35,32 +35,12 @@ jobs:
           echo 'MSG<<EOF' >> $GITHUB_ENV
           cat update.log >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-          echo 'LEN_ERR<<EOF' >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-      
-      - name: Ft push Err MSG
-        if: env.LEN_ERR > 0
-        run: |
-          curl -s "http://sc.ftqq.com/${{ secrets.ftsckey }}.send?text=qc-update-ci-err" \
-          -d "&desp=$(cat err.log)"
-        
-      - name: Cool Push Err MSG
-        if: env.LEN_ERR >0
-        run: |
-          curl -s "https://push.xuthus.cc/send/${{ secrets.coolpushskey }}" \
-          -d $'QC Update Err\n\n$(cat err.log)'
 
       - name: Ft push Update MSG
         if: env.NEWQC > 0
         run: |
           curl -s "http://sc.ftqq.com/${{ secrets.ftsckey }}.send?text=qc-update-ci-msg" \
           -d "&desp=${{ env.MSG }}"
-           
-      - name: Cool Push Update MSG
-        if: env.NEWQC > 0
-        run: |
-          curl -s "https://push.xuthus.cc/send/${{ secrets.coolpushskey }}" \
-          -d $'QC Update\n\n${{ env.MSG }}'
       
       - name: Git config
         if: env.NEWQC > 0
@@ -86,10 +66,9 @@ jobs:
           cd ..
           git clone git@gitee.com:suplxc/getqcpy.git
           cd getqcpy
-          cp -f ../qc-update/err.log ./err.log
           cp -f ../qc-update/list ./list.txt
           cp -f ../qc-update/zhikong.txt ./zhikong.txt
           TZ='Asia/Shanghai' date +%s > version
-          git add list.txt zhikong.txt version err.log
+          git add list.txt zhikong.txt version
           git commit -m "${{ env.MSG }}"
           git push origin master
