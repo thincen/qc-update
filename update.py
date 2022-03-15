@@ -76,13 +76,15 @@ def pushDB(data):
         return
     header={'Content-Type':'application/json'}
     err=[]
+    print(data)
     for node in data:
         dbData={}
         dbData['id']=node['id']
         dbData['c']=node['val']
         dbData['name']=node['name']
         dbData['num']=node['num']
-        dbData['expiration']=int(datetime.strptime(node['date'],'%Y-%m-%d').timestamp())
+        if(node['data']!=''):
+            dbData['expiration']=int(datetime.strptime(node['date'],'%Y-%m-%d').timestamp())
         dbData['update']=int(datetime.now().astimezone(timezone(timedelta(hours=8))).timestamp())
         body=json.dumps(dbData).encode(encoding='utf-8')
         res=requests.post(url,headers=header,data=body)
@@ -127,7 +129,7 @@ def main():
             try:
                 pushDB(data)
             except Exception as e:
-                pushPlus(e)
+                pushPlus({'msg':str(e)})
                 pass
             msg.extend(data)
     pushPlus(msg)
