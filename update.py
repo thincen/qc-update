@@ -76,15 +76,17 @@ def pushDB(data):
         return
     header={'Content-Type':'application/json'}
     err=[]
-    print(data)
+    #print(data)
     for node in data:
         dbData={}
         dbData['id']=node['id']
         dbData['c']=node['val']
         dbData['name']=node['name']
         dbData['num']=node['num']
-        if(node['data']!=''):
+        if(node['date']!=''):
             dbData['expiration']=int(datetime.strptime(node['date'],'%Y-%m-%d').timestamp())
+        else:
+            dbData['expiration']=-1
         dbData['update']=int(datetime.now().astimezone(timezone(timedelta(hours=8))).timestamp())
         body=json.dumps(dbData).encode(encoding='utf-8')
         res=requests.post(url,headers=header,data=body)
