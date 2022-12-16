@@ -48,6 +48,8 @@ def parseRes(res):
             name=namearr[0]
         else:
             name=namearr[1]
+            if name=="水质":
+                name=namearr[2]
         node['name']=name
         node['num']=res[i+2]
         val=res[i+3].replace('/l','/L')
