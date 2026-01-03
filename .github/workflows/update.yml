@@ -36,11 +36,12 @@ jobs:
           cat update.log >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Ft push Update MSG
+      - name: bark push Update MSG
         if: env.NEWQC > 0
         run: |
-          curl -s "http://sc.ftqq.com/${{ secrets.ftsckey }}.send?text=qc-update-ci-msg" \
-          -d "&desp=${{ env.MSG }}"
+          curl -H 'Content-Type: application/json; charset=utf-8' \
+               -d "{\"title\": \"github qc-update\",\"markdown\": \"$(echo "${{ env.MSG }}" | tr '\n' ',')\",\"group\": \"qu-update\",\"volume\": \"1\",\"action\": \"none\"}" \
+               -X POST https://api.day.app/${{ secrets.barkkey}}
       
       - name: Git config
         if: env.NEWQC > 0
